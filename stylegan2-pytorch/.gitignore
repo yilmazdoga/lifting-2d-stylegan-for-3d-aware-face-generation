@@ -128,10 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-.DS_Store
-**/.DS_Store
-.idea
-
-results/
-pretrained/
-pretrained_liftedgan/
+wandb/
+*.lmdb/
+*.pkl
