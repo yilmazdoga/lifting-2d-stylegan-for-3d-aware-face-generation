@@ -1,3 +1,8 @@
+import sys
+from os import path
+
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
 import os
 import sys
 import time
@@ -14,7 +19,6 @@ from models.lifted_gan import LiftedGAN
 
 
 def main(args):
-
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
     model = LiftedGAN()
@@ -24,26 +28,27 @@ def main(args):
 
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
- 
-    for head in tqdm(range(0,args.n_samples,args.batch_size)):
+
+    for head in tqdm(range(0, args.n_samples, args.batch_size)):
         with torch.no_grad():
-            tail = min(args.n_samples, head+args.batch_size)
-            b = tail-head
+            tail = min(args.n_samples, head + args.batch_size)
+            b = tail - head
 
-            latent = torch.randn((b,512))
+            latent = torch.randn((b, 512))
             styles = model.generator.style(latent)
-            styles = args.truncation * styles + (1-args.truncation) * model.w_mu
+            styles = args.truncation * styles + (1 - args.truncation) * model.w_mu
 
-            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(styles)
+            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(
+                styles)
 
             recon_im = model.render(canon_depth, canon_albedo, canon_light, view, trans_map=trans_map)[0]
 
-            outputs = recon_im.permute(0,2,3,1).cpu().numpy() * 0.5 + 0.5
-            outputs = np.minimum(1.0,np.maximum(0.0,outputs))
-            outputs = (outputs*255).astype(np.uint8)
+            outputs = recon_im.permute(0, 2, 3, 1).cpu().numpy() * 0.5 + 0.5
+            outputs = np.minimum(1.0, np.maximum(0.0, outputs))
+            outputs = (outputs * 255).astype(np.uint8)
 
             for i in range(outputs.shape[0]):
-                imwrite(f'{args.output_dir}/{head+i+1:05d}.png', outputs[i])
+                imwrite(f'{args.output_dir}/{head + i + 1:05d}.png', outputs[i])
 
 
 if __name__ == '__main__':
