@@ -37,7 +37,7 @@ base_random_seed = 1
 ####### TRAINING STRATEGY #######
 
 # Number of samples in a batch
-batch_size = 8
+batch_size = 4
 
 # Number of epochs
 num_epochs = 10
