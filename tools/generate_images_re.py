@@ -62,7 +62,7 @@ def main(args):
             canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model_reproduced.estimate(
                 styles_reproduced)
 
-            recon_im_reproduced = styles_reproduced.render(canon_depth, canon_albedo, canon_light, view, trans_map=trans_map)[0]
+            recon_im_reproduced = model_reproduced.render(canon_depth, canon_albedo, canon_light, view, trans_map=trans_map)[0]
 
             outputs_reproduced = recon_im_reproduced.permute(0, 2, 3, 1).cpu().numpy() * 0.5 + 0.5
             outputs_reproduced = np.minimum(1.0, np.maximum(0.0, outputs_reproduced))
