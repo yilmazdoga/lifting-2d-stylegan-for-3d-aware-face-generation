@@ -68,9 +68,8 @@ def main(args):
             outputs_reproduced = np.minimum(1.0, np.maximum(0.0, outputs_reproduced))
             outputs_reproduced = (outputs_reproduced * 255).astype(np.uint8)
 
-            tag = 'RE_'
             for i in range(outputs_reproduced.shape[0]):
-                imwrite(f'{args.output_dir}/{tag + head + i + 1:05d}.png', outputs_reproduced[i])
+                imwrite(f'{args.output_dir}/{head + i + 1:05d}' + '_RE.png', outputs_reproduced[i])
 
 
 if __name__ == '__main__':
