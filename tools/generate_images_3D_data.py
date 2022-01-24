@@ -58,7 +58,7 @@ def main(args):
 
             print("type:", type(canon_depth))
 
-            save_object(canon_depth, f'{args.output_dir}/{head + i + 1:05d}.pkl')
+            save_object(canon_depth.cpu().numpy(), f'{args.output_dir}/{head + i + 1:05d}.pkl')
 
 
 if __name__ == '__main__':
