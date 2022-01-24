@@ -56,7 +56,7 @@ def main(args):
             for i in range(outputs.shape[0]):
                 imwrite(f'{args.output_dir}/{head + i + 1:05d}.png', outputs[i])
 
-            print("type:", type(canon_depth))
+            print("type:", type(canon_depth.cpu().numpy()))
 
             save_object(canon_depth.cpu().numpy(), f'{args.output_dir}/{head + i + 1:05d}.pkl')
 
