@@ -3,7 +3,7 @@
 ####### INPUT OUTPUT #######
 
 # The name of the project folder
-name = 'default'
+name = 'cats'
 
 # The folder to save log and model
 log_base_dir = './log_cats_256/'
