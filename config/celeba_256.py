@@ -3,10 +3,10 @@
 ####### INPUT OUTPUT #######
 
 # The name of the project folder
-name = 'default'
+name = 'celeba'
 
 # The folder to save log and model
-log_base_dir = './log_ffhq_256/'
+log_base_dir = './log_celeba_256/'
 
 # The interval between display in terminal
 print_interval = 10
@@ -18,7 +18,7 @@ summary_interval = 500
 n_samples = 32
 
 # The path to the pretrained StyleGAN2 checkpoint
-generator_path = './pretrained/stylegan2-ffhq-cropped-300000.pt'
+generator_path = './pretrained/checkpoint_stylegan_celeba/090000.pt'
 
 # The path to the pretrained face recognition embedding
 face_embedding_path = './pretrained/lresnet_casia.pth.tar'
