@@ -18,7 +18,7 @@ summary_interval = 500
 n_samples = 32
 
 # The path to the pretrained StyleGAN2 checkpoint
-generator_path = './pretrained/stylegan2-cats-cropped-300000.pt'
+generator_path = './pretrained/checkpoint_stylegan_training_afhq_dog/020000.pt'
 
 # The path to the pretrained face recognition embedding
 face_embedding_path = None
