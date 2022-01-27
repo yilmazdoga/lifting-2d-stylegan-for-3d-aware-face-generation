@@ -3,10 +3,10 @@
 ####### INPUT OUTPUT #######
 
 # The name of the project folder
-name = 'celeba'
+name = 'afhq_dog'
 
 # The folder to save log and model
-log_base_dir = './log_celeba_256/'
+log_base_dir = './log_afhq_dog_256/'
 
 # The interval between display in terminal
 print_interval = 10
@@ -18,10 +18,10 @@ summary_interval = 500
 n_samples = 32
 
 # The path to the pretrained StyleGAN2 checkpoint
-generator_path = './pretrained/checkpoint_stylegan_training_afhq_dog/020000.pt'
+generator_path = './pretrained/stylegan2-cats-cropped-300000.pt'
 
 # The path to the pretrained face recognition embedding
-face_embedding_path = './pretrained/lresnet_casia.pth.tar'
+face_embedding_path = None
 
 # The resolution of generator
 image_size = 256
@@ -68,9 +68,9 @@ lam_perc = 1.0
 lam_flip = 0.8
 lam_perturb_im = 2.0
 lam_perturb_param = 4.0
-lam_identity_perturb = 1.0
-lam_reg_style = 0.5
-lam_albedo_rank = 1e-2
+lam_identity_perturb = 0.0
+lam_reg_style = 0.1
+lam_albedo_rank = 5e-3
 rank_downsample = 4
 perc_type = 'cosine'
 clip_render_grad = True
