@@ -23,7 +23,7 @@ import numpy as np
 from tqdm import tqdm
 
 from inception import InceptionV3
-
+import inception
 
 class MultiResolutionDataset(Dataset):
     def __init__(self, path, transform, resolution=256):
