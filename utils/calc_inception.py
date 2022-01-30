@@ -16,6 +16,7 @@ from torchvision.models import inception_v3, Inception3
 import numpy as np
 from tqdm import tqdm
 
+from dataset import MultiResolutionDataset
 from inception import InceptionV3
 
 class Inception3Feature(Inception3):
