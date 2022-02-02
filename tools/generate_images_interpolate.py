@@ -42,11 +42,12 @@ def main(args):
             styles2 = model.generator.style(latent2)
             end_styles = args.truncation * styles2 + (1 - args.truncation) * model.w_mu
 
-            i1 = torch.lerp(start_styles, end_styles, 0.25)
-            i2 = torch.lerp(start_styles, end_styles, 0.50)
-            i3 = torch.lerp(start_styles, end_styles, 0.75)
+            i1 = torch.lerp(start_styles, end_styles, 0.20)
+            i2 = torch.lerp(start_styles, end_styles, 0.40)
+            i3 = torch.lerp(start_styles, end_styles, 0.60)
+            i4 = torch.lerp(start_styles, end_styles, 0.80)
 
-            interpolated_styles = [start_styles, i1, i2, i3, end_styles]
+            interpolated_styles = [start_styles, i1, i2, i3, i4, end_styles]
 
             for i, style in enumerate(interpolated_styles):
                 generate_save_image(args, head, model, style, i)
