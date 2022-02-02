@@ -77,8 +77,7 @@ def generate_save_image(args, b, head, model, styles, label):
         view_rotate[:, 3] = torch.sin(view_rotate[:, 1]) * 0.1
         view_rotate[:, 4] = - torch.sin(view_rotate[:, 0]) * 0.2
         view_rotate[:, 5] = torch.ones(b) * 0
-        rocon_rotate_ = model.render(canon_depth, canon_albedo, canon_light, view_rotate, trans_map=trans_map)[
-            0]
+        rocon_rotate_ = model.render(canon_depth, canon_albedo, canon_light, view_rotate, trans_map=trans_map)[0]
         recon_rotate.append(rocon_rotate_.cpu())
     outputs = torch.stack(recon_rotate, 1).clamp(min=-1., max=1.)  # N x M x C x H x W
     outputs = outputs.permute(0, 1, 3, 4, 2).numpy() * 0.5 + 0.5
