@@ -48,18 +48,18 @@ def main(args):
 
             interpolated_styles = [start_styles, i1, i2, i3, end_styles]
 
-            for style in interpolated_styles:
-                generate_save_image(args, head, model, style)
+            for i, style in enumerate(interpolated_styles):
+                generate_save_image(args, head, model, style, i)
 
 
-def generate_save_image(args, head, model, styles):
+def generate_save_image(args, head, model, styles, label):
     canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(styles)
     recon_im = model.render(canon_depth, canon_albedo, canon_light, view, trans_map=trans_map)[0]
     outputs = recon_im.permute(0, 2, 3, 1).cpu().numpy() * 0.5 + 0.5
     outputs = np.minimum(1.0, np.maximum(0.0, outputs))
     outputs = (outputs * 255).astype(np.uint8)
     for i in range(outputs.shape[0]):
-        imwrite(f'{args.output_dir}/{head + i + 1:05d}.png', outputs[i])
+        imwrite(f'{args.output_dir}/{head + i + 1:05d}' + '_' + str(label) + '.png', outputs[i])
 
 
 if __name__ == '__main__':
