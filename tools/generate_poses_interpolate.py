@@ -84,7 +84,7 @@ def generate_save_image(args, b, head, model, styles, label):
     outputs = outputs.permute(0, 1, 3, 4, 2).numpy() * 0.5 + 0.5
     outputs = (outputs * 255).astype(np.uint8)
     for i in range(outputs.shape[0]):
-        mimwrite(f'{args.output_dir}/{head + i + 1}' + '_' + str(label) + '.png', outputs[i])
+        mimwrite(f'{args.output_dir}/{head + i + 1}' + '_' + str(label) + '.gif', outputs[i])
 
 
 if __name__ == '__main__':
