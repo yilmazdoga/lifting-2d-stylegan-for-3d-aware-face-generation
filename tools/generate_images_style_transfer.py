@@ -11,7 +11,7 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 import torch
-from torchvision.io import read_image
+import torchvision.io
 
 from imageio import imwrite
 
@@ -40,7 +40,7 @@ def main(args):
             styles1 = model.generator.style(latent1)
             start_styles = args.truncation * styles1 + (1 - args.truncation) * model.w_mu
 
-            style_im = read_image(path=args.style)
+            style_im = torchvision.io.read_image(path=args.style)
             style_latent = model.generator.get_latent(style_im)
             end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
 
