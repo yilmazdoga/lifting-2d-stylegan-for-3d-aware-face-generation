@@ -49,9 +49,14 @@ def main(args):
             styles2 = model.generator.style(latent2)
             styles2 = args.truncation * styles2 + (1 - args.truncation) * model.w_mu
 
-            canon_depth1, canon_albedo1, canon_light1, view1, neutral_style1, trans_map1, canon_im_raw1 = model.estimate_w_style(styles1, styles2)
+            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(styles1)
+            render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, "orijinal")
 
-            render_save(args, canon_albedo1, canon_depth1, canon_light1, head, model, trans_map1, view1, "orijinal")
+            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(styles2)
+            render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, "style")
+
+            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate_w_style(styles1, styles2)
+            render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, "orijinal_w_style")
 
 
 def render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, label):
