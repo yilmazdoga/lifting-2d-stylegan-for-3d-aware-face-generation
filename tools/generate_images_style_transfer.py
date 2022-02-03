@@ -11,10 +11,8 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 import torch
-import torchvision.io
 
-from imageio import imwrite
-
+from imageio import imwrite, imread
 
 import utils
 from models.lifted_gan import LiftedGAN
@@ -40,7 +38,11 @@ def main(args):
             styles1 = model.generator.style(latent1)
             start_styles = args.truncation * styles1 + (1 - args.truncation) * model.w_mu
 
-            style_im = torchvision.io.read_image(path=args.style)
+            raw_image = imread(args.style)
+            print(type(raw_image))
+
+
+            style_im = None
             style_latent = model.generator.get_latent(style_im)
             end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
 
