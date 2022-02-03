@@ -43,7 +43,7 @@ def main(args):
             #
             # style_latent = tensor['test_files/mona_lisa2.jpeg']["latent"]
             # style_latent = style_latent.to(device)
-            # end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
+            # mona_lisa = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
 
             latent2 = torch.randn((b, 512))
             styles2 = model.generator.style(latent2)

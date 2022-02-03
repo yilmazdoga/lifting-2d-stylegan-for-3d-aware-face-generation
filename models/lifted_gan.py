@@ -166,31 +166,39 @@ class LiftedGAN(object):
 
         return loss_rec
 
-
-
     def estimate_w_style(self, content_latent, style_latent):
         b = content_latent.shape[0]
         size = self.config.image_size
 
         ## decompose the style code into neutralized style, light and view
-        neutral_style, canon_light, view = self.netSD(content_latent)
+        content_w, canon_light, view = self.netSD(content_latent)
         neutral_light = torch.stack([
             canon_light[:, 0],
             canon_light[:, 1],
             canon_light[:, 2] * 0.0,
             canon_light[:, 3] * 0.0,
         ], 1)
-
-        neutral_content_style, _, _ = self.netSD(style_latent)
-        neutral_style = self.netSC(neutral_content_style.detach(), neutral_light, 0 * view)
+        content_w = self.netSC(content_latent.detach(), neutral_light, 0 * view)
 
         ## predict canonical albedo
-        canon_albedo, style_feat = self.generator(neutral_style,
-                                                  input_is_latent=True, randomize_noise=False, return_feat=True)
+        canon_albedo, _ = self.generator(content_w, input_is_latent=True, randomize_noise=False, return_feat=True)
         canon_im_raw = canon_albedo
 
+        ## decompose the style code into neutralized style, light and view
+        _, canon_light_style, view_style = self.netSD(style_latent)
+        neutral_light_style = torch.stack([
+            canon_light_style[:, 0],
+            canon_light_style[:, 1],
+            canon_light_style[:, 2] * 0.0,
+            canon_light_style[:, 3] * 0.0,
+        ], 1)
+        style_w = self.netSC(style_latent.detach(), neutral_light_style, 0 * view_style)
+
+        ## predict canonical albedo
+        _, style_feat = self.generator(style_w, input_is_latent=True, randomize_noise=False, return_feat=True)
+
         ## predict canonical depth
-        canon_depth_raw = self.netD(neutral_style, style_feat)  # BxHxW
+        canon_depth_raw = self.netD(content_w, style_feat)  # BxHxW
         canon_depth_raw = canon_depth_raw.squeeze(1)
         canon_depth = canon_depth_raw - canon_depth_raw.view(b, -1).mean(1).view(b, 1, 1)
         canon_depth = canon_depth.tanh()
@@ -204,7 +212,7 @@ class LiftedGAN(object):
             depth_border = F.pad(depth_border, (border_with, border_with), mode='constant', value=1)
             canon_depth = canon_depth * (1 - depth_border) + depth_border * self.border_depth
 
-        trans_map = self.netT(neutral_style)
+        trans_map = self.netT(content_w)
         trans_map = torch.sigmoid(trans_map + 5)
 
         depth_mask = (canon_depth[:, None] <= (self.border_depth - 0.01)).float()
@@ -220,7 +228,7 @@ class LiftedGAN(object):
             canon_shading = canon_light_a.view(-1, 1, 1, 1) + canon_light_b.view(-1, 1, 1, 1) * canon_diffuse_shading
             canon_albedo = (canon_albedo / 2 + 0.5) / (canon_shading + 1e-8) * 2 - 1
 
-        return canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw
+        return canon_depth, canon_albedo, canon_light, view, content_w, trans_map, canon_im_raw
 
 
     def estimate(self, input_style):
