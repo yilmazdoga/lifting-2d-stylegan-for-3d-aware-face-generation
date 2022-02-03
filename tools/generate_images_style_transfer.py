@@ -22,6 +22,7 @@ from models.lifted_gan import LiftedGAN
 
 def main(args):
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     model = LiftedGAN()
     model.load_model(args.model)
@@ -40,9 +41,11 @@ def main(args):
             styles1 = model.generator.style(latent1)
             start_styles = args.truncation * styles1 + (1 - args.truncation) * model.w_mu
 
+            torch.cuda.current_device()
+
             image = Image.open(args.style)
             transform = transforms.ToTensor()
-            tensor = transform(image)
+            tensor = transform(image).to(device)
 
             style_im = tensor
             style_latent = model.generator.get_latent(style_im)
