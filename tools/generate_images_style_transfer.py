@@ -13,8 +13,6 @@ from tqdm import tqdm
 import torch
 
 from imageio import imwrite
-from PIL import Image
-import torchvision.transforms as transforms
 
 import utils
 from models.lifted_gan import LiftedGAN
@@ -43,9 +41,8 @@ def main(args):
 
             torch.cuda.current_device()
 
-            image = Image.open(args.style)
-            transform = transforms.ToTensor()
-            tensor = transform(image).to(device)
+            tensor = torch.load(args.style)
+            print(tensor)
 
             style_im = tensor
             style_latent = model.generator.get_latent(style_im)
