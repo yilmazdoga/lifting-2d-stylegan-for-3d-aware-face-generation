@@ -14,7 +14,7 @@ from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
 
-from lpips import __init__, base_model, networks_basic, pretrained_networks
+from lpips/__init__.py import
 from model import Generator
 
 
