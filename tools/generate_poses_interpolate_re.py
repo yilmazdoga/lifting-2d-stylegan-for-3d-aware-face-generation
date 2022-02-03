@@ -118,11 +118,13 @@ if __name__ == '__main__':
                         type=str)
     parser.add_argument("--output_dir", help="The output path",
                         type=str)
+    parser.add_argument("--type", help="The path to aligned face images",
+                        type=str, default="yaw")
     parser.add_argument("--truncation", help="Truncation of latent styles",
                         type=int, default=0.7)
     parser.add_argument("--n_samples", help="Number of images to generate",
-                        type=int, default=1)
+                        type=int, default=32)
     parser.add_argument("--batch_size", help="Number of images per mini batch",
-                        type=int, default=1)
+                        type=int, default=16)
     args = parser.parse_args()
     main(args)
