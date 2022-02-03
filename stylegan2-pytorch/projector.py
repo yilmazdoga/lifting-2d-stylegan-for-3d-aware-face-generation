@@ -1,3 +1,8 @@
+import sys
+from os import path
+
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
 import argparse
 import math
 import os
@@ -9,7 +14,7 @@ from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
 
-import lpips
+from lpips import *
 from model import Generator
 
 
