@@ -3,6 +3,7 @@ from os import path
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
+import pickle
 import argparse
 import math
 import os
@@ -17,6 +18,9 @@ from tqdm import tqdm
 from lpips.__init__ import PerceptualLoss
 from model import Generator
 
+def save_object(obj, filename):
+    with open(filename, 'wb') as outp:  # Overwrites any existing file.
+        pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
 
 def noise_regularize(noises):
     loss = 0
@@ -227,6 +231,8 @@ if __name__ == "__main__":
                 f" mse: {mse_loss.item():.4f}; lr: {lr:.4f}"
             )
         )
+
+    save_object([latent_path[-1]], 'out.pkl')
 
     img_gen, _ = g_ema([latent_path[-1]], input_is_latent=True, noise=noises)
 
