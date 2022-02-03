@@ -42,7 +42,8 @@ def main(args):
             tensor = torch.load(args.style)
 
             style_latent = tensor['test_files/mona_lisa2.jpeg']["latent"]
-            end_styles = style_latent.to(device)
+            style_latent = style_latent.to(device)
+            end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
 
             i1 = torch.lerp(start_styles, end_styles, 0.20)
             i2 = torch.lerp(start_styles, end_styles, 0.40)
