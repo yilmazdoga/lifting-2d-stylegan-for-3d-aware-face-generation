@@ -37,27 +37,32 @@ def main(args):
 
             latent1 = torch.randn((b, 512))
             styles1 = model.generator.style(latent1)
-            start_styles = args.truncation * styles1 + (1 - args.truncation) * model.w_mu
+            styles1 = args.truncation * styles1 + (1 - args.truncation) * model.w_mu
 
-            tensor = torch.load(args.style)
+            # tensor = torch.load(args.style)
+            #
+            # style_latent = tensor['test_files/mona_lisa2.jpeg']["latent"]
+            # style_latent = style_latent.to(device)
+            # end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
 
-            style_latent = tensor['test_files/mona_lisa2.jpeg']["latent"]
-            style_latent = style_latent.to(device)
-            end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
+            latent2 = torch.randn((b, 512))
+            styles2 = model.generator.style(latent2)
+            styles2 = args.truncation * styles2 + (1 - args.truncation) * model.w_mu
 
-            i1 = torch.lerp(start_styles, end_styles, 0.20)
-            i2 = torch.lerp(start_styles, end_styles, 0.40)
-            i3 = torch.lerp(start_styles, end_styles, 0.60)
-            i4 = torch.lerp(start_styles, end_styles, 0.80)
+            canon_depth1, canon_albedo1, canon_light1, view1, neutral_style1, trans_map1, canon_im_raw1 = model.estimate(
+                styles1)
 
-            interpolated_styles = [start_styles, i1, i2, i3, i4, end_styles]
+            render_save(args, canon_albedo1, canon_depth1, canon_light1, head, model, trans_map1, view1, "orijinal")
 
-            for i, style in enumerate(interpolated_styles):
-                generate_save_image(args, head, model, style, i)
+            canon_depth2, canon_albedo2, canon_light2, view2, neutral_style2, trans_map2, canon_im_raw2 = model.estimate(
+                styles2)
+
+            render_save(args, canon_albedo2, canon_depth2, canon_light2, head, model, trans_map2, view2, "orijinal2")
+
+            render_save(args, canon_albedo1, canon_depth1, canon_light1, head, model, trans_map2, view1, "orijinal_w_style_of_2")
 
 
-def generate_save_image(args, head, model, styles, label):
-    canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(styles)
+def render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, label):
     recon_im = model.render(canon_depth, canon_albedo, canon_light, view, trans_map=trans_map)[0]
     outputs = recon_im.permute(0, 2, 3, 1).cpu().numpy() * 0.5 + 0.5
     outputs = np.minimum(1.0, np.maximum(0.0, outputs))
