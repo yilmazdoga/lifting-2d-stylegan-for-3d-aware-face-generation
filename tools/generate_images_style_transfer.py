@@ -55,7 +55,7 @@ def main(args):
             canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(styles2)
             render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, "style")
 
-            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate_w_style(styles1, styles2)
+            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate_w_style_v2(styles1, styles2)
             render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, "orijinal_w_style")
 
 
