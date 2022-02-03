@@ -168,6 +168,61 @@ class LiftedGAN(object):
 
 
 
+    def estimate_w_style(self, content_latent, style_latent):
+        b = content_latent.shape[0]
+        size = self.config.image_size
+
+        ## decompose the style code into neutralized style, light and view
+        neutral_style, canon_light, view = self.netSD(content_latent)
+        neutral_light = torch.stack([
+            canon_light[:, 0],
+            canon_light[:, 1],
+            canon_light[:, 2] * 0.0,
+            canon_light[:, 3] * 0.0,
+        ], 1)
+
+        neutral_content_style, _, _ = self.netSD(style_latent)
+        neutral_style = self.netSC(neutral_content_style.detach(), neutral_light, 0 * view)
+
+        ## predict canonical albedo
+        canon_albedo, style_feat = self.generator(neutral_style,
+                                                  input_is_latent=True, randomize_noise=False, return_feat=True)
+        canon_im_raw = canon_albedo
+
+        ## predict canonical depth
+        canon_depth_raw = self.netD(neutral_style, style_feat)  # BxHxW
+        canon_depth_raw = canon_depth_raw.squeeze(1)
+        canon_depth = canon_depth_raw - canon_depth_raw.view(b, -1).mean(1).view(b, 1, 1)
+        canon_depth = canon_depth.tanh()
+        canon_depth = self.depth_rescaler(canon_depth)
+
+        # clamp border depth
+        if self.config.clamp_border:
+            _, h, w = canon_depth.shape
+            border_with = 2
+            depth_border = torch.zeros(1, h, w - 2 * border_with).to(canon_depth.device)
+            depth_border = F.pad(depth_border, (border_with, border_with), mode='constant', value=1)
+            canon_depth = canon_depth * (1 - depth_border) + depth_border * self.border_depth
+
+        trans_map = self.netT(neutral_style)
+        trans_map = torch.sigmoid(trans_map + 5)
+
+        depth_mask = (canon_depth[:, None] <= (self.border_depth - 0.01)).float()
+        trans_map = depth_mask * torch.ones_like(trans_map) + (1 - depth_mask) * trans_map
+        trans_map = self.blur(trans_map)
+        trans_map = F.pad(trans_map[:, :, 1:-1, 2:-2], (2, 2, 1, 1), mode='constant', value=0.0)
+
+        # Delight
+        if self.config.generator_texture:
+            canon_light_a, canon_light_b, canon_light_d = self.parse_light(canon_light, frontalize=True)
+            canon_normal = self.renderer.get_normal_from_depth(canon_depth)
+            canon_diffuse_shading = (canon_normal * canon_light_d.view(-1, 1, 1, 3)).sum(3).clamp(min=0).unsqueeze(1)
+            canon_shading = canon_light_a.view(-1, 1, 1, 1) + canon_light_b.view(-1, 1, 1, 1) * canon_diffuse_shading
+            canon_albedo = (canon_albedo / 2 + 0.5) / (canon_shading + 1e-8) * 2 - 1
+
+        return canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw
+
+
     def estimate(self, input_style):
         b = input_style.shape[0]
         size = self.config.image_size
