@@ -37,8 +37,6 @@ def main(args):
             tail = min(args.n_samples, head + args.batch_size)
             b = tail - head
 
-            # ------------------ Orj --------------------
-
             latent1 = torch.randn((b, 512))
             styles1 = model_original.generator.style(latent1)
             start_styles = args.truncation * styles1 + (1 - args.truncation) * model_original.w_mu
@@ -54,25 +52,12 @@ def main(args):
 
             interpolated_styles = [start_styles, i1, i2, i3, i4, end_styles]
 
+            # ------------------ Orj --------------------
+
             for i, style in enumerate(interpolated_styles):
                 generate_save_image(args, b, head, model_original, style, i)
 
-            # ------------------ Re --------------------
-
-            latent1 = torch.randn((b, 512))
-            styles1 = model_reproduced.generator.style(latent1)
-            start_styles = args.truncation * styles1 + (1 - args.truncation) * model_reproduced.w_mu
-
-            latent2 = torch.randn((b, 512))
-            styles2 = model_reproduced.generator.style(latent2)
-            end_styles = args.truncation * styles2 + (1 - args.truncation) * model_reproduced.w_mu
-
-            i1 = torch.lerp(start_styles, end_styles, 0.20)
-            i2 = torch.lerp(start_styles, end_styles, 0.40)
-            i3 = torch.lerp(start_styles, end_styles, 0.60)
-            i4 = torch.lerp(start_styles, end_styles, 0.80)
-
-            interpolated_styles = [start_styles, i1, i2, i3, i4, end_styles]
+            # ------------------ Re -------------------
 
             for i, style in enumerate(interpolated_styles):
                 generate_save_image(args, b, head, model_reproduced, style, str(i) + '_RE')
