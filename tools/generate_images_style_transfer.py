@@ -42,7 +42,6 @@ def main(args):
             torch.cuda.current_device()
 
             tensor = torch.load(args.style)
-            print(tensor['test_files/mona_lisa2.jpeg'].shape)
             print(tensor['test_files/mona_lisa2.jpeg']["latent"].shape)
 
             style_im = tensor
