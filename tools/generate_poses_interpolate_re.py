@@ -12,7 +12,7 @@ import numpy as np
 from tqdm import tqdm
 import torch
 
-from imageio import imwrite
+from imageio import mimwrite
 
 import utils
 from models.lifted_gan import LiftedGAN
@@ -55,7 +55,7 @@ def main(args):
             interpolated_styles = [start_styles, i1, i2, i3, i4, end_styles]
 
             for i, style in enumerate(interpolated_styles):
-                generate_save_image(args, head, model_original, style, i)
+                generate_save_image(args, b, head, model_original, style, i)
 
             # ------------------ Re --------------------
 
@@ -75,24 +75,45 @@ def main(args):
             interpolated_styles = [start_styles, i1, i2, i3, i4, end_styles]
 
             for i, style in enumerate(interpolated_styles):
-                generate_save_image(args, head, model_reproduced, style, str(i) + '_RE')
+                generate_save_image(args, b, head, model_reproduced, style, str(i) + '_RE')
 
 
-def generate_save_image(args, head, model, styles, label):
+def generate_save_image(args, b, head, model, styles, label):
     canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(styles)
-    recon_im = model.render(canon_depth, canon_albedo, canon_light, view, trans_map=trans_map)[0]
-    outputs = recon_im.permute(0, 2, 3, 1).cpu().numpy() * 0.5 + 0.5
-    outputs = np.minimum(1.0, np.maximum(0.0, outputs))
+    recon_rotate = []
+    if args.type == 'yaw':
+        angles = range(-45, 46, 3)
+    elif args.type == 'pitch':
+        angles = range(-15, 16, 1)
+    else:
+        raise ValueError(f'Unkown angle type: {args.type}')
+    for angle in angles:
+        view_rotate = view.clone()
+        if args.type == 'yaw':
+            angle_ = -1 * angle / model.xyz_rotation_range
+            view_rotate[:, 0] = torch.ones(b) * 0.0
+            view_rotate[:, 1] = torch.ones(b) * angle_
+        else:
+            angle_ = angle / model.xyz_rotation_range
+            view_rotate[:, 0] = torch.ones(b) * angle_
+            view_rotate[:, 1] = torch.ones(b) * 0
+        view_rotate[:, 2] = torch.ones(b) * 0
+        view_rotate[:, 3] = torch.sin(view_rotate[:, 1]) * 0.1
+        view_rotate[:, 4] = - torch.sin(view_rotate[:, 0]) * 0.2
+        view_rotate[:, 5] = torch.ones(b) * 0
+        rocon_rotate_ = model.render(canon_depth, canon_albedo, canon_light, view_rotate, trans_map=trans_map)[0]
+        recon_rotate.append(rocon_rotate_.cpu())
+    outputs = torch.stack(recon_rotate, 1).clamp(min=-1., max=1.)  # N x M x C x H x W
+    outputs = outputs.permute(0, 1, 3, 4, 2).numpy() * 0.5 + 0.5
     outputs = (outputs * 255).astype(np.uint8)
     for i in range(outputs.shape[0]):
-        imwrite(f'{args.output_dir}/{head + i + 1:05d}' + '_' + str(label) + '.png', outputs[i])
+        mimwrite(f'{args.output_dir}/{head + i + 1}' + '_' + str(label) + '.gif', outputs[i])
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_original", help="The path to the pre-trained original model weights",
                         type=str)
-
     parser.add_argument("--model_reproduced", help="The path to the pre-trained reproduced model weights",
                         type=str)
     parser.add_argument("--output_dir", help="The output path",
