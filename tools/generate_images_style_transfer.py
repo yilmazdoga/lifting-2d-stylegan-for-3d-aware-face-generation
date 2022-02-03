@@ -11,8 +11,10 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 import torch
+from torchvision.io import read_image
 
 from imageio import imwrite
+
 
 import utils
 from models.lifted_gan import LiftedGAN
@@ -38,9 +40,9 @@ def main(args):
             styles1 = model.generator.style(latent1)
             start_styles = args.truncation * styles1 + (1 - args.truncation) * model.w_mu
 
-            latent2 = torch.randn((b, 512))
-            styles2 = model.generator.style(latent2)
-            end_styles = args.truncation * styles2 + (1 - args.truncation) * model.w_mu
+            style_im = read_image(path=args.style)
+            style_latent = model.generator.get_latent(style_im)
+            end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
 
             i1 = torch.lerp(start_styles, end_styles, 0.20)
             i2 = torch.lerp(start_styles, end_styles, 0.40)
@@ -66,6 +68,8 @@ def generate_save_image(args, head, model, styles, label):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("model", help="The path to the pre-trained model",
+                        type=str)
+    parser.add_argument("--style", help="style",
                         type=str)
     parser.add_argument("--output_dir", help="The output path",
                         type=str)
