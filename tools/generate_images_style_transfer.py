@@ -39,13 +39,9 @@ def main(args):
             styles1 = model.generator.style(latent1)
             start_styles = args.truncation * styles1 + (1 - args.truncation) * model.w_mu
 
-            torch.cuda.current_device()
+            tensor = torch.load(args.style).to(device)
 
-            tensor = torch.load(args.style)
-            print(tensor['test_files/mona_lisa2.jpeg']["latent"].shape)
-
-            style_im = tensor
-            style_latent = model.generator.get_latent(style_im)
+            style_latent = tensor['test_files/mona_lisa2.jpeg']["latent"]
             end_styles = args.truncation * style_latent + (1 - args.truncation) * model.w_mu
 
             i1 = torch.lerp(start_styles, end_styles, 0.20)
