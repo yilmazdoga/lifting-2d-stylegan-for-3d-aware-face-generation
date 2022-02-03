@@ -9,7 +9,6 @@ from torch.autograd import Variable
 import numpy as np
 from pdb import set_trace as st
 from skimage import color
-from IPython import embed
 from . import pretrained_networks as pn
 
 import lpips as util
