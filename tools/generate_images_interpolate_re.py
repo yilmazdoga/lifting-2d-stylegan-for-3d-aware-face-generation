@@ -90,7 +90,10 @@ def generate_save_image(args, head, model, styles, label):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("model", help="The path to the pre-trained model",
+    parser.add_argument("--model_original", help="The path to the pre-trained original model weights",
+                        type=str)
+
+    parser.add_argument("--model_reproduced", help="The path to the pre-trained reproduced model weights",
                         type=str)
     parser.add_argument("--output_dir", help="The output path",
                         type=str)
