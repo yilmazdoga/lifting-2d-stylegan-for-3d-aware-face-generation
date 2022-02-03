@@ -14,7 +14,7 @@ from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
 
-from lpips/__init__.py import
+import lpips
 from model import Generator
 
 
