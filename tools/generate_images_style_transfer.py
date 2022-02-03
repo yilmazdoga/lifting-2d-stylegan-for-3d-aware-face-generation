@@ -59,7 +59,7 @@ def main(args):
 
             render_save(args, canon_albedo2, canon_depth2, canon_light2, head, model, trans_map2, view2, "orijinal2")
 
-            render_save(args, canon_albedo1, canon_depth1, canon_light1, head, model, trans_map2, view1, "orijinal_w_style_of_2")
+            render_save(args, canon_albedo2, canon_depth1, canon_light1, head, model, trans_map1, view1, "orijinal_w_style_of_2")
 
 
 def render_save(args, canon_albedo, canon_depth, canon_light, head, model, trans_map, view, label):
