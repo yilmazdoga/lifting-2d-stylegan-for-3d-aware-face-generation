@@ -43,7 +43,7 @@ You might skip this step if you are using our pre-calculated statistics file ([l
 python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/inception/file
 ```
 
-## Example Results
+## Additional Results to Our Reproduction Paper
 
 ### FFHQ Experiments
 
