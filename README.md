@@ -43,7 +43,6 @@ You can generate random samples from a lifted gan by running:
 ```sh
 python tools/generate_images.py /path/to/the/checkpoint --output_dir your/output/dir
 ```
-Make sure the checkpoint file and its `config.py` file are under the same folder.
 
 ### Sampling random faces (using same latent vector)
 You can generate random samples from 2 different LiftedGANs (whit same latent vector) by running:
@@ -57,13 +56,11 @@ You can run viewpoint manipulation for a single LiftedGAN by:
 python tools/generate_poses.py /path/to/the/checkpoint --output_dir your/output/dir --type yaw
 ```
 
-
 ### Running Viewpoint Manipulation (using same latent vector)
 You can run viewpoint manipulation by using 2 different LiftedGANs (whit same latent vector) by:
 ```sh
 python tools/generate_poses_re.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir --type yaw
 ```
-
 
 ### Running Light Direction Manipulation
 You can run light direction manipulation for a single LiftedGAN by:
@@ -77,13 +74,11 @@ You can run light direction manipulation by using 2 different LiftedGANs (whit s
 python tools/generate_lighting_re.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir
 ```
 
-
 ### Running pose interpolation
 You can run the command below to interpolate between two face poses:
 ```sh
 python tools/generate_poses_interpolate.py /path/to/the/checkpoint --output_dir your/output/dir
 ```
-
 
 ### Running pose interpolation  (using same latent vector)
 You can run the command below to interpolate between two face poses:
@@ -91,9 +86,7 @@ You can run the command below to interpolate between two face poses:
 python tools/generate_poses_interpolate_re.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir --type yaw
 ```
 
-
 For all experiments make sure the checkpoint file and its `config.py` file are under the same folder. For viewpoint manipulation experiments you can change the type parameter to toggle between yaw and pitch manipulation.
-
 
 ### Testing FID
 We use the code from rosinality's stylegan2-pytorch to compute FID. To compute the FID, you first need to compute the statistics of real images:
