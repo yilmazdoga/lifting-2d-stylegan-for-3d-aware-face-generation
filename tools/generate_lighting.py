@@ -38,26 +38,27 @@ def main(args):
             styles = model.generator.style(latent)
             styles = args.truncation * styles + (1 - args.truncation) * model.w_mu
 
-            canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(
-                styles)
+            light_calculate(args, head, model, styles)
 
-            recon_relight = []
-            for angle in range(-60, 61, 6):
-                light = canon_light.clone()
-                angle_ = angle * math.pi / 180
-                light[:, 0] = 0.2
-                light[:, 1] = 0.8
-                light[:, 2] = math.tan(angle_)
-                light[:, 3] = 0
-                recon_relight_ = model.render(canon_depth, canon_albedo, light, view, trans_map=trans_map)[0]
-                recon_relight.append(recon_relight_.cpu())
 
-            outputs = torch.stack(recon_relight, 1).clamp(min=-1., max=1.)  # N x M x C x H x W
-            outputs = outputs.permute(0, 1, 3, 4, 2).numpy() * 0.5 + 0.5
-            outputs = (outputs * 255).astype(np.uint8)
-
-            for i in range(outputs.shape[0]):
-                mimwrite(f'{args.output_dir}/{head + i + 1}.gif', outputs[i])
+def light_calculate(args, head, model, styles):
+    canon_depth, canon_albedo, canon_light, view, neutral_style, trans_map, canon_im_raw = model.estimate(
+        styles)
+    recon_relight = []
+    for angle in range(-60, 61, 6):
+        light = canon_light.clone()
+        angle_ = angle * math.pi / 180
+        light[:, 0] = 0.2
+        light[:, 1] = 0.8
+        light[:, 2] = math.tan(angle_)
+        light[:, 3] = 0
+        recon_relight_ = model.render(canon_depth, canon_albedo, light, view, trans_map=trans_map)[0]
+        recon_relight.append(recon_relight_.cpu())
+    outputs = torch.stack(recon_relight, 1).clamp(min=-1., max=1.)  # N x M x C x H x W
+    outputs = outputs.permute(0, 1, 3, 4, 2).numpy() * 0.5 + 0.5
+    outputs = (outputs * 255).astype(np.uint8)
+    for i in range(outputs.shape[0]):
+        mimwrite(f'{args.output_dir}/{head + i + 1}.gif', outputs[i])
 
 
 if __name__ == '__main__':
