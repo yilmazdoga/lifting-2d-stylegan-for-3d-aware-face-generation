@@ -41,9 +41,59 @@ To train a StyleGAN2 from you own dataset, check the content under [`stylegan2-p
 ### Sampling random faces
 You can generate random samples from a lifted gan by running:
 ```sh
-python tools/generate_images.py /path/to/the/checkpoint --output_dir results/
+python tools/generate_images.py /path/to/the/checkpoint --output_dir your/output/dir
 ```
 Make sure the checkpoint file and its `config.py` file are under the same folder.
+
+### Sampling random faces (using same latent vector)
+You can generate random samples from 2 different LiftedGANs (whit same latent vector) by running:
+```sh
+python tools/generate_images_re.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir
+```
+Make sure the checkpoint file and its `config.py` file are under the same folder.
+
+### Running Viewpoint Manipulation
+You can run viewpoint manipulation for a single LiftedGAN by:
+```sh
+python tools/generate_poses.py /path/to/the/checkpoint --output_dir your/output/dir --type yaw
+```
+Make sure the checkpoint file and its `config.py` file are under the same folder. Change the type parameter to toggle between yaw and pitch manipulation. 
+
+### Running Viewpoint Manipulation (using same latent vector)
+You can run viewpoint manipulation by using 2 different LiftedGANs (whit same latent vector) by:
+```sh
+python tools/generate_poses_re.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir --type yaw
+```
+Make sure the checkpoint file and its `config.py` file are under the same folder. Change the type parameter to toggle between yaw and pitch manipulation. 
+
+### Running Light Direction Manipulation
+You can run light direction manipulation for a single LiftedGAN by:
+```sh
+python tools/generate_lighting.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir
+```
+Make sure the checkpoint file and its `config.py` file are under the same folder.
+
+### Running Light Direction Manipulation (using same latent vector)
+You can run light direction manipulation by using 2 different LiftedGANs (whit same latent vector) by:
+```sh
+python tools/generate_lighting_re.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir
+```
+Make sure the checkpoint file and its `config.py` file are under the same folder.
+
+### Running pose interpolation
+You can run the command below to interpolate between two face poses:
+```sh
+python tools/generate_poses_interpolate.py /path/to/the/checkpoint --output_dir your/output/dir
+```
+Make sure the checkpoint file and its `config.py` file are under the same folder.
+
+### Running pose interpolation  (using same latent vector)
+You can run the command below to interpolate between two face poses:
+```sh
+python tools/generate_poses_interpolate_re.py --model_original /path/to/the/checkpoint --model_reproduced /path/to/the/checkpoint --output_dir your/output/dir --type yaw
+```
+Make sure the checkpoint file and its `config.py` file are under the same folder. Change the type parameter to toggle between yaw and pitch manipulation.
+
 
 ### Testing FID
 We use the code from rosinality's stylegan2-pytorch to compute FID. To compute the FID, you first need to compute the statistics of real images:
