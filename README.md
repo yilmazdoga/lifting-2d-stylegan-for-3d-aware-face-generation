@@ -47,7 +47,7 @@ python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/incept
 
 ### FFHQ Experiments
 
-#### Faces Yaw
+#### Face Generation
 | Original | Reproduced |
 |----------|------------|
 | ![](readme_assets/faces/00001.png) | ![](readme_assets/faces/00001_RE.png) |
@@ -60,7 +60,7 @@ python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/incept
 | ![](readme_assets/faces/00008.png) | ![](readme_assets/faces/00008_RE.png) |
 
 
-### Faces Yaw
+### Viewpoint Manipulation (yaw)
 | Original | Reproduced |
 |----------|------------|
 | ![](readme_assets/faces_yaw/10.gif) | ![](readme_assets/faces_yaw/10_RE.gif)|
@@ -73,7 +73,7 @@ python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/incept
 | ![](readme_assets/faces_yaw/17.gif) | ![](readme_assets/faces_yaw/17_RE.gif)|
 
 
-### Faces Pitch
+### Viewpoint Manipulation (pitch)
 | Original | Reproduced |
 |----------|------------|
 | ![](readme_assets/faces_pitch/10.gif) | ![](readme_assets/faces_pitch/10_RE.gif) |
@@ -85,7 +85,7 @@ python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/incept
 | ![](readme_assets/faces_pitch/16.gif) | ![](readme_assets/faces_pitch/16_RE.gif) |
 | ![](readme_assets/faces_pitch/21.gif) | ![](readme_assets/faces_pitch/21_RE.gif) |
 
-### Faces Lighting
+### Re-lighting
 | Original | Reproduced |
 |----------|------------|
 | ![](readme_assets/faces_light/1.gif) | ![](readme_assets/faces_light/1.gif) |
@@ -99,7 +99,7 @@ python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/incept
 
 ### CelebA Experiments
 
-| Face Generation | Viewpoint Manipualtion (yaw) | Viewpoint Manipualtion (pitch) | Re-lighting |
+| Face Generation | Viewpoint Manipulation (yaw) | Viewpoint Manipulation (pitch) | Re-lighting |
 |-----------------|------------------------------|--------------------------------|-------------|
 |![](readme_assets/celeba/faces/00061.png)|![](readme_assets/celeba/yaw/73.gif)|![](readme_assets/celeba/pitch/55.gif)|![](readme_assets/celeba/lighting/25.gif)|
 |![](readme_assets/celeba/faces/00062.png)|![](readme_assets/celeba/yaw/74.gif)|![](readme_assets/celeba/pitch/56.gif)|![](readme_assets/celeba/lighting/26.gif)|
@@ -111,4 +111,45 @@ python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/incept
 |![](readme_assets/celeba/faces/00068.png)|![](readme_assets/celeba/yaw/80.gif)|![](readme_assets/celeba/pitch/62.gif)|![](readme_assets/celeba/lighting/32.gif)|
 
 ### AFHQ Cat Experiments
+
+#### Face Generation
+| Original | Reproduced |
+|----------|------------|
+| ![](readme_assets/AFHQ_cat/faces/00010.png) | ![](readme_assets/AFHQ_cat/faces/00010_RE.png) |
+| ![](readme_assets/AFHQ_cat/faces/00011.png) | ![](readme_assets/AFHQ_cat/faces/00011_RE.png) |
+| ![](readme_assets/AFHQ_cat/faces/00012.png) | ![](readme_assets/AFHQ_cat/faces/00012_RE.png) |
+| ![](readme_assets/AFHQ_cat/faces/00013.png) | ![](readme_assets/AFHQ_cat/faces/00013_RE.png) |
+| ![](readme_assets/AFHQ_cat/faces/00014.png) | ![](readme_assets/AFHQ_cat/faces/00014_RE.png) |
+| ![](readme_assets/AFHQ_cat/faces/00015.png) | ![](readme_assets/AFHQ_cat/faces/00015_RE.png) |
+
+### Viewpoint Manipulation (yaw)
+| Original | Reproduced |
+|----------|------------|
+| ![](readme_assets/AFHQ_cat/yaw/28.gif) | ![](readme_assets/AFHQ_cat/yaw/28_RE.gif)|
+| ![](readme_assets/AFHQ_cat/yaw/29.gif) | ![](readme_assets/AFHQ_cat/yaw/29_RE.gif)|
+| ![](readme_assets/AFHQ_cat/yaw/30.gif) | ![](readme_assets/AFHQ_cat/yaw/30_RE.gif)|
+| ![](readme_assets/AFHQ_cat/yaw/31.gif) | ![](readme_assets/AFHQ_cat/yaw/31_RE.gif)|
+| ![](readme_assets/AFHQ_cat/yaw/32.gif) | ![](readme_assets/AFHQ_cat/yaw/32_RE.gif)|
+| ![](readme_assets/AFHQ_cat/yaw/33.gif) | ![](readme_assets/AFHQ_cat/yaw/33_RE.gif)|
+
+### Viewpoint Manipulation (pitch)
+| Original | Reproduced |
+|----------|------------|
+| ![](readme_assets/AFHQ_cat/pitch/64.gif) | ![](readme_assets/AFHQ_cat/pitch/64_RE.gif) |
+| ![](readme_assets/AFHQ_cat/pitch/65.gif) | ![](readme_assets/AFHQ_cat/pitch/65_RE.gif) |
+| ![](readme_assets/AFHQ_cat/pitch/66.gif) | ![](readme_assets/AFHQ_cat/pitch/66_RE.gif) |
+| ![](readme_assets/AFHQ_cat/pitch/67.gif) | ![](readme_assets/AFHQ_cat/pitch/67_RE.gif) |
+| ![](readme_assets/AFHQ_cat/pitch/68.gif) | ![](readme_assets/AFHQ_cat/pitch/68_RE.gif) |
+| ![](readme_assets/AFHQ_cat/pitch/69.gif) | ![](readme_assets/AFHQ_cat/pitch/69_RE.gif) |
+
+
+### Re-lighting
+| Original | Reproduced |
+|----------|------------|
+| ![](readme_assets/AFHQ_cat/light/73.gif) | ![](readme_assets/AFHQ_cat/light/73_RE.gif) |
+| ![](readme_assets/AFHQ_cat/light/74.gif) | ![](readme_assets/AFHQ_cat/light/74_RE.gif) |
+| ![](readme_assets/AFHQ_cat/light/75.gif) | ![](readme_assets/AFHQ_cat/light/75_RE.gif) |
+| ![](readme_assets/AFHQ_cat/light/76.gif) | ![](readme_assets/AFHQ_cat/light/76_RE.gif) |
+| ![](readme_assets/AFHQ_cat/light/77.gif) | ![](readme_assets/AFHQ_cat/light/77_RE.gif) |
+| ![](readme_assets/AFHQ_cat/light/78.gif) | ![](readme_assets/AFHQ_cat/light/78_RE.gif) |
 
