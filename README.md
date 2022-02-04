@@ -99,4 +99,16 @@ python tools/test_fid.py /path/to/the/checkpoint --inception /path/to/the/incept
 
 ### CelebA Experiments
 
+| Face Generation | Viewpoint Manipualtion (yaw) | Viewpoint Manipualtion (pitch) | Re-lighting |
+|-----------------|------------------------------|--------------------------------|-------------|
+|![](readme_assets/celeba/faces/00061.png)|![](readme_assets/celeba/yaw/73.gif)|![](readme_assets/celeba/pitch/55.gif)|![](readme_assets/celeba/lighting/25.gif)|
+|![](readme_assets/celeba/faces/00062.png)|![](readme_assets/celeba/yaw/74.gif)|![](readme_assets/celeba/pitch/56.gif)|![](readme_assets/celeba/lighting/26.gif)|
+|![](readme_assets/celeba/faces/00063.png)|![](readme_assets/celeba/yaw/75.gif)|![](readme_assets/celeba/pitch/57.gif)|![](readme_assets/celeba/lighting/27.gif)|
+|![](readme_assets/celeba/faces/00064.png)|![](readme_assets/celeba/yaw/76.gif)|![](readme_assets/celeba/pitch/58.gif)|![](readme_assets/celeba/lighting/28.gif)|
+|![](readme_assets/celeba/faces/00065.png)|![](readme_assets/celeba/yaw/77.gif)|![](readme_assets/celeba/pitch/59.gif)|![](readme_assets/celeba/lighting/29.gif)|
+|![](readme_assets/celeba/faces/00066.png)|![](readme_assets/celeba/yaw/78.gif)|![](readme_assets/celeba/pitch/60.gif)|![](readme_assets/celeba/lighting/30.gif)|
+|![](readme_assets/celeba/faces/00067.png)|![](readme_assets/celeba/yaw/79.gif)|![](readme_assets/celeba/pitch/61.gif)|![](readme_assets/celeba/lighting/31.gif)|
+|![](readme_assets/celeba/faces/00068.png)|![](readme_assets/celeba/yaw/80.gif)|![](readme_assets/celeba/pitch/62.gif)|![](readme_assets/celeba/lighting/32.gif)|
+
 ### AFHQ Cat Experiments
+
